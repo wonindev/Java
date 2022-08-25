@@ -1,6 +1,14 @@
 public class CalMain {
     public static void main(String[] args) {
         Calculator cal = new Calculator();
-        System.out.println("출력: " + cal.run(args));
+
+
+        int num = 0;
+        num = cal.run(args);
+
+        if (num >= 0) {
+            System.out.println("출력: " + num);
+        }
+        
     }
 }
