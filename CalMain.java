@@ -2,35 +2,52 @@ import java.util.Scanner;
 
 public class CalMain {
     public static void main(String[] args) {
+
+
         Calculator cal = new Calculator();
 
-        int num = 0;
+        Scanner sc = new Scanner(System.in);
+        String exp = "";
+        String useful = "off";
+        boolean flag = false;
+        int sum = 0;
 
 
-        if (args.length == 0) {
-            Scanner sc = new Scanner(System.in);
+        System.out.println("프로그램 종료는 stop를 입력해주세요!");
+        System.out.println("음수 화면 출력X 기능을 입해주세요: \"on\", \"off\"");
+        useful = sc.next();
+        flag = cal.onoff(useful);
+
+
+        if (args.length == 1) {
+            exp = args[0];
+        }
+        else{
+            exp = sc.next();
         }
 
-        if (args.length >= 1) {
-            num = cal.run(args);
-            System.out.print("입력: ");
-            for (int i = 0; i < args.length; i++) {
-                System.out.print(args[i]);
-            }
-            System.out.println();
+        sum = cal.run(exp);
 
-            if (num >= 0) {
-                System.out.println("출력커스텀1: " + num);
-                System.out.println("출력커스텀2: 정답은 " + num + "입니다");
-                System.out.print("출력커스텀3: ");
-                for (int i = 0; i < args.length; i++) {
-                    System.out.print(args[i]);
-                }
-                System.out.print(" 의 정답은 " + num + "입니다");
+        cal.print(exp, sum, flag);
+
+        while (true) {
+            useful = sc.next();
+            sum=0;
+            if (useful.equals("stop")) break;
+
+            if ((useful.equals("on") || useful.equals("off"))) {
+                flag = cal.onoff(useful);
+                continue;
+            } else {
+                exp = useful;
             }
+
+            sum = cal.run(exp);
+            cal.print(exp, sum, flag);
 
         }
-
-
     }
 }
+
+
+
