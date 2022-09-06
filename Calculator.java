@@ -3,6 +3,7 @@ public class Calculator {
         String temp[] = exp.split("[+-]");
         String oper[] = exp.split("[0-9]+");
 
+
         int sum = Integer.parseInt(temp[0]);
 
         for (int i = 1; i < temp.length; i++) {
@@ -40,6 +41,5 @@ public class Calculator {
             System.out.println();
         }
     }
-
 
 }
