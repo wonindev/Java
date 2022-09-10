@@ -88,8 +88,9 @@ class Notchback extends Sedan {
 
 	@Override
 	public String toString() {
-		return String.format("%s, 문 개수: %d, 문의 개수가 많은가? : %s ,트렁크의 위치: %s ", super.toString(), door_count,
-				doorcountisbig(door_count), trunk_position);
+		return String.format("%s, 문 개수: %d, 문의 개수가 많은가? : %s ,트렁크의 위치: %s, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b ",
+				super.toString(), door_count, doorcountisbig(door_count), trunk_position,
+				operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
 	}
 
 }
