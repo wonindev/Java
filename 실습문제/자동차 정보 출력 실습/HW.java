@@ -1,4 +1,4 @@
-import java.util.Collections;
+
 import java.util.Vector;
 
 public class HW {
@@ -11,6 +11,7 @@ public class HW {
 	private static final String TRUNK_POSITION[] = { "앞", "뒤" };
 	private static final String CARGOTYPE[] = { "화학", "방사능", "오염물질", "가스", "목재", "해산물", "건설자재", "팔레트" };
 	private static final String ROADTYPE[] = { "포장도로", "비포장도로", "모래밭", "산악길" };
+	private static final String COLOR[] = { "빨강", "노랑", "초록", "파랑", "검정", "하양" };
 
 	public static void main(String[] args) {
 		Vehicle vehicle[] = new Vehicle[50];
@@ -20,11 +21,11 @@ public class HW {
 			vehicle[i] = makeVehicle();
 			vh.add(vehicle[i]);
 		}
-		
-		Collections.sort(vh);
-		
-		for(int i = 0; i < vehicle.length; i++) {
+
+		for (int i = 0; i < vehicle.length; i++) {
 			System.out.print("[" + i + "] ");
+			System.out.print(Vehicle.color(COLOR[Rand.r(0, COLOR.length - 1)]));
+			System.out.print(" ");
 			vh.get(i).PrintInfo();
 			System.out.println();
 		}

@@ -1,5 +1,5 @@
 
-public abstract class Vehicle implements Feature, Comparable<Vehicle> {
+public abstract class Vehicle implements Feature {
 	String brand;
 	int vehicle_birth;
 
@@ -13,10 +13,11 @@ public abstract class Vehicle implements Feature, Comparable<Vehicle> {
 	abstract boolean full_automation_drivemode(String brand);
 
 	public abstract void PrintInfo();
-	
-	
-	
-	
+
+	public static String color(String color) {
+		String out = color + "색";
+		return out;
+	}
 
 	@Override
 	public String howuse() {
@@ -28,13 +29,6 @@ public abstract class Vehicle implements Feature, Comparable<Vehicle> {
 	@Override
 	public String toString() {
 		return String.format("[%d년식 (%s)] ", vehicle_birth, brand);
-	}
-
-	@Override
-	public int compareTo(Vehicle o) {
-		if (brand.equals(o.brand))
-			return brand.compareTo(o.brand);
-		return brand.compareTo(o.brand);
 	}
 
 }
@@ -383,7 +377,8 @@ class CrossoOver extends SUV implements PowerSource, MovingPower {
 
 	@Override
 	public String toString() {
-		return String.format("%s, 구동력 표현: %s 연료정보: %s,\n 자동차에 적합한 도로: %s, 자동차 수리비: %d원, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
+		return String.format(
+				"%s, 구동력 표현: %s 연료정보: %s,\n 자동차에 적합한 도로: %s, 자동차 수리비: %d원, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
 				super.toString(), drivemode(brand), fueltype(brand), roadtype, repairpay(carcost),
 				operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
 	}
