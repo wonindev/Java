@@ -1,7 +1,7 @@
 
 interface Driving {
-	String drivemode(String drive);
-	String gearmode(String gear);
+	String drivemode(String brand);
+	String gearmode(int vehicle_birth);
 
 }
 
@@ -14,5 +14,5 @@ interface MovingPower extends PowerSource { // 자동차 구동력을 표현. �
 }
 
 interface Feature { // 자동차의 활용에 대한 정보 표현. 승용, 운반용, 적재용량, 짐칸 크기 등
-	String howuse(String cartype);
+	String howuse();
 }

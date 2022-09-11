@@ -1,5 +1,5 @@
 
-public abstract class Vehicle {
+public abstract class Vehicle implements Feature, Comparable<Vehicle> {
 	String brand;
 	int vehicle_birth;
 
@@ -12,14 +12,34 @@ public abstract class Vehicle {
 
 	abstract boolean full_automation_drivemode(String brand);
 
+	public abstract void PrintInfo();
+	
+	
+	
+	
+
+	@Override
+	public String howuse() {
+		if (this instanceof SUV && this instanceof Truck)
+			return "운반용";
+		return "승용";
+	}
+
 	@Override
 	public String toString() {
 		return String.format("[%d년식 (%s)] ", vehicle_birth, brand);
 	}
 
+	@Override
+	public int compareTo(Vehicle o) {
+		if (brand.equals(o.brand))
+			return brand.compareTo(o.brand);
+		return brand.compareTo(o.brand);
+	}
+
 }
 
-class Sedan extends Vehicle  {
+class Sedan extends Vehicle implements Driving {
 	int maxspeed;
 	int drive_per_fuel;
 
@@ -49,18 +69,35 @@ class Sedan extends Vehicle  {
 			return "Good";
 		return "Bad";
 	}
-	
-	
+
+	@Override
+	public String drivemode(String brand) {
+		if (brand.equals("테슬라") || brand.equals("벤츠") || brand.equals("포르쉐") || brand.equals("람보르기니")
+				|| brand.equals("페라리"))
+			return "사륜구동";
+		return "이륜구동";
+	}
+
+	@Override
+	public String gearmode(int vehicle_birth) {
+		if (vehicle_birth > 2010)
+			return "오토";
+		return "스틱";
+	}
 
 	@Override
 	public String toString() {
-		return String.format("%s 최고속도: %dkm, 연비: %dkm, 연비상태: %s", super.toString(), maxspeed, drive_per_fuel,
-				fuel_efficiency(drive_per_fuel));
+		return String.format("%s 기어타입: %s, 최고속도: %dkm, 연비: %dkm, 연비상태: %s", super.toString(), gearmode(vehicle_birth),
+				maxspeed, drive_per_fuel, fuel_efficiency(drive_per_fuel));
+	}
+
+	@Override
+	public void PrintInfo() {
 	}
 
 }
 
-class Notchback extends Sedan {
+class Notchback extends Sedan implements PowerSource, MovingPower {
 	int door_count;
 	String trunk_position;
 
@@ -85,20 +122,42 @@ class Notchback extends Sedan {
 
 	public String doorcountisbig(int door_count) {
 		if (door_count > 2)
-			return "많다.";
+			return "많다";
 		return "적다";
 	}
 
 	@Override
+	public String fueltype(String brand) {
+		if (brand.equals("벤츠") || brand.equals("포르쉐") || brand.equals("람보르기니") || brand.equals("페라리")) {
+			return "가솔린";
+		} else if (brand.equals("테슬라")) {
+			return "전기";
+		}
+		return "디젤";
+	}
+
+	@Override
+	public String drivingpower(String fueltype) {
+		if (fueltype.equals("전기"))
+			return "전기모터";
+		return "엔진";
+	}
+
+	@Override
 	public String toString() {
-		return String.format("%s, 문 개수: %d, 문의 개수가 많은가? : %s, 트렁크의 위치: %s, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
-				super.toString(), door_count, doorcountisbig(door_count), trunk_position,
-				operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+		return String.format(
+				"%s 구동력 표현: %s, 연료정보: %s, \n문 개수: %d, 문의 개수가 많은가? : %s, 트렁크의 위치: %s, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
+				super.toString(), drivemode(brand), fueltype(brand), door_count, doorcountisbig(door_count),
+				trunk_position, operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+	}
+
+	public void PrintInfo() {
+		System.out.println("<" + howuse() + ">" + this);
 	}
 
 }
 
-class Hatchback extends Sedan {
+class Hatchback extends Sedan implements PowerSource, MovingPower {
 
 	int trunksize;
 	int count_trunk_in_golfbag;
@@ -128,15 +187,37 @@ class Hatchback extends Sedan {
 	}
 
 	@Override
+	public String fueltype(String brand) {
+		if (brand.equals("벤츠") || brand.equals("포르쉐") || brand.equals("람보르기니") || brand.equals("페라리")) {
+			return "가솔린";
+		} else if (brand.equals("테슬라")) {
+			return "전기";
+		}
+		return "디젤";
+	}
+
+	@Override
+	public String drivingpower(String fueltype) {
+		if (fueltype.equals("전기"))
+			return "전기모터";
+		return "엔진";
+	}
+
+	@Override
 	public String toString() {
-		return String.format("%s, 트렁크 크기: %s, 트렁크에 들어가는 골프백 최대개수: %d, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
-				super.toString(), trunk_is_big_or_small(trunksize), count_trunk_in_golfbag,
-				operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+		return String.format(
+				"%s 구동력 표현: %s, 연료정보: %s,\n트렁크 크기: %s, 트렁크에 들어가는 골프백 최대개수: %d개, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
+				super.toString(), drivemode(brand), fueltype(brand), trunk_is_big_or_small(trunksize),
+				count_trunk_in_golfbag, operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+	}
+
+	public void PrintInfo() {
+		System.out.println("<" + howuse() + ">" + this);
 	}
 
 }
 
-class SUV extends Vehicle {
+class SUV extends Vehicle implements Driving {
 
 	int drive_per_fuel;
 	int humannum;
@@ -170,14 +251,35 @@ class SUV extends Vehicle {
 	}
 
 	@Override
+	public String drivemode(String brand) {
+		if (brand.equals("테슬라") || brand.equals("벤츠") || brand.equals("포르쉐") || brand.equals("람보르기니")
+				|| brand.equals("페라리"))
+			return "사륜구동";
+		return "이륜구동";
+	}
+
+	@Override
+	public String gearmode(int vehicle_birth) {
+		if (vehicle_birth > 2010)
+			return "오토";
+		return "스틱";
+	}
+
+	@Override
 	public String toString() {
-		return String.format("%s 연비: %dkm, 탑승인원: %d명 %s ", super.toString(), drive_per_fuel, humannum,
-				limithuman(humannum));
+		return String.format("%s 기어타입: %s, 연비: %dkm, 탑승인원: %d명 %s ", super.toString(), gearmode(vehicle_birth),
+				drive_per_fuel, humannum, limithuman(humannum));
+	}
+
+	@Override
+	public void PrintInfo() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
 
-class Truck extends SUV {
+class Truck extends SUV implements PowerSource, MovingPower {
 
 	int now_weight;
 	String cargotype;
@@ -205,14 +307,36 @@ class Truck extends SUV {
 	}
 
 	@Override
+	public String fueltype(String brand) {
+		if (brand.equals("벤츠") || brand.equals("포르쉐") || brand.equals("람보르기니") || brand.equals("페라리")) {
+			return "가솔린";
+		} else if (brand.equals("테슬라")) {
+			return "전기";
+		}
+		return "디젤";
+	}
+
+	@Override
+	public String drivingpower(String fueltype) {
+		if (fueltype.equals("전기"))
+			return "전기모터";
+		return "엔진";
+	}
+
+	@Override
 	public String toString() {
-		return String.format("%s 현재 중량: %d, 화물 종류: %s, 화물 종류에 따른 화물 분리가능여부: %b, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b ",
-				super.toString(), now_weight, cargotype, takeOff_cargo(cargotype),
+		return String.format(
+				"%s 구동력 표현: %s 연료정보: %s,\n현재 중량: %d톤, 화물 종류: %s, 화물 종류에 따른 화물 분리가능여부: %b, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b ",
+				super.toString(), drivemode(brand), fueltype(brand), now_weight, cargotype, takeOff_cargo(cargotype),
 				operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+	}
+
+	public void PrintInfo() {
+		System.out.println("{" + howuse() + "}" + this);
 	}
 }
 
-class CrossoOver extends SUV {
+class CrossoOver extends SUV implements PowerSource, MovingPower {
 
 	String roadtype;
 	int carcost;
@@ -237,13 +361,35 @@ class CrossoOver extends SUV {
 	}
 
 	public int repairpay(int carcost) {
-		return carcost / 10;
+		return carcost / 100;
+	}
+
+	@Override
+	public String fueltype(String brand) {
+		if (brand.equals("벤츠") || brand.equals("포르쉐") || brand.equals("람보르기니") || brand.equals("페라리")) {
+			return "가솔린";
+		} else if (brand.equals("테슬라")) {
+			return "전기";
+		}
+		return "디젤";
+	}
+
+	@Override
+	public String drivingpower(String fueltype) {
+		if (fueltype.equals("전기"))
+			return "전기모터";
+		return "엔진";
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s 자동차에 적합한 도로: %s, 자동차 수리비: %d, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b", super.toString(),
-				roadtype, repairpay(carcost), operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+		return String.format("%s, 구동력 표현: %s 연료정보: %s,\n 자동차에 적합한 도로: %s, 자동차 수리비: %d원, 뒷자석 에어백이 작동유무: %b, 자율주행모드 여부: %b",
+				super.toString(), drivemode(brand), fueltype(brand), roadtype, repairpay(carcost),
+				operate_airbag_backseat(vehicle_birth), full_automation_drivemode(brand));
+	}
+
+	public void PrintInfo() {
+		System.out.println("<" + howuse() + ">" + this);
 	}
 
 }
