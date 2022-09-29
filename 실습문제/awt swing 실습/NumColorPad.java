@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-public class HW extends JFrame {
+public class NumColorPad extends JFrame {
 	public static int W;
 	public static int H;
 	public static int R;
