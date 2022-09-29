@@ -17,7 +17,7 @@ public class NumColorPad extends JFrame {
 	public static boolean oddflag;
 	public static boolean evenflag;
 
-	public HW() {
+	public NumColorPad() {
 
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -78,7 +78,7 @@ public class NumColorPad extends JFrame {
 		R = Integer.parseInt(args[2]);
 		C = Integer.parseInt(args[3]);
 
-		new HW();
+		new NumColorPad();
 	}
 
 	class MyHandler implements ActionListener {
